@@ -17,13 +17,7 @@ public interface ViewListener {
      */
     public void join(String playername) throws IOException;
 
-    /**
-     * Send player's choice to server
-     *
-     * @param choice        0 for mouse, 1 for cat, or 2 for elephant
-     * @throws IOException  thrown if an I/O error occurred
-     */
-    public void playerChose(int choice) throws IOException;
+    public void playerChose(int id, int choice) throws IOException;
 
     /**
      * Sent when player starts a new round

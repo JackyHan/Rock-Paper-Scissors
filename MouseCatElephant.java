@@ -1,43 +1,39 @@
-import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 /**
  * MouseCatElephant is the main program, it starts the connection to the server
  * and initializes the model proxy and view
  *
- * Usage: java MouseCatElephant <I>host</I> <I>port</I> <I>playername</I>
+ * Usage: java MouseCatElephant <I>serverhost</I> <I>serverport</I>
+ *          <I>clienthost</I> <I>clientport</I> <I>playername</I>
  *
  * @author Nicholas A. Mattis
- * @version 7/20/2015
+ * @version 8/5/2015
  */
 public class MouseCatElephant {
 
     /**
      * Main method that executes entire program
      *
-     * @param args          host to connect, port number, and player name
+     * @param args          server host & port, client host & port, playername
      * @throws Exception
      */
     public static void main(String[] args) throws Exception{
 
-        if (args.length != 3) {
+        if (args.length != 5) {
             usage();
         }
-        String host = args[0];
-        int port = Integer.parseInt(args[1]);
-        String playername = args[2];
+        String serverhost = args[0];
+        int serverport = Integer.parseInt(args[1]);
+        String clienthost = args[2];
+        int clientport = Integer.parseInt(args[3]);
+        String playername = args[4];
 
-        Socket socket = new Socket();
-        try {
-            socket.connect (new InetSocketAddress(host, port));
-        } catch (IOException e) {
-            System.err.println("Could not connect to the host " + host +
-                    " on port " + port);
-            System.exit(1);
-        }
+        DatagramSocket mailbox = new DatagramSocket(new InetSocketAddress(clienthost, clientport));
+
         MouseCatElephantUI view = MouseCatElephantUI.create(playername);
-        ModelProxy proxy = new ModelProxy(socket);
+        final ModelProxy proxy = new ModelProxy(mailbox, new InetSocketAddress(serverhost, serverport));
         proxy.setModelListener(view);
         view.setViewListener(proxy);
         proxy.join(playername);
@@ -47,8 +43,8 @@ public class MouseCatElephant {
      * Print usage message and exit.
      */
     private static void usage() {
-        System.err.println("Usage: java MouseCatElephant <host> " +
-                "<port> <playername>");
+        System.err.println("Usage: java MouseCatElephant <serverhost> " +
+                "<serverport> <clienthost> <clientport> <playername>");
         System.exit(1);
     }
 }

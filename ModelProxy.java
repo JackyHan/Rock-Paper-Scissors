@@ -1,7 +1,7 @@
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.Socket;
-import java.util.Scanner;
+import java.io.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketAddress;
 
 /**
  * ModelProxy class, handles messaging between the client and server. Outputs
@@ -10,25 +10,26 @@ import java.util.Scanner;
  * view based on the command it has parsed
  *
  * @author Nicholas A. Mattis
- * @version 7/22/2015
+ * @version 8/5/2015
  */
 public class ModelProxy implements ViewListener {
 
-    private Socket socket;
-    private PrintStream out;
-    private Scanner in;
+    private DatagramSocket mailbox;
+    private SocketAddress destination;
     private ModelListener modelListener;
 
     /**
      * Constructor
      *
-     * @param socket        connected socket
-     * @throws IOException  thrown if an I/O error occurs
+     * @param mailbox       Mailbox
+     * @param destination   Destination Mailbox Address
+     *
+     * @throws IOException  Thrown if I/O error occurred
      */
-    public ModelProxy(Socket socket) throws IOException {
-        this.socket = socket;
-        out = new PrintStream(socket.getOutputStream(), true);
-        in = new Scanner(socket.getInputStream());
+    public ModelProxy(DatagramSocket mailbox, SocketAddress destination)
+            throws IOException {
+        this.mailbox = mailbox;
+        this.destination = destination;
     }
 
     /**
@@ -43,22 +44,45 @@ public class ModelProxy implements ViewListener {
 
     @Override
     public void join(String playername) throws IOException {
-        out.printf("join %s\n", playername);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        out.writeByte('J');
+        out.writeUTF(playername);
+        out.close();
+        byte[] payload = baos.toByteArray();
+        mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
     @Override
-    public void playerChose(int choice) throws IOException {
-        out.printf("choose %d\n", choice);
+    public void playerChose(int id, int choice) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        out.writeByte('P');
+        out.writeByte(id);
+        out.writeByte(choice);
+        out.close();
+        byte[] payload = baos.toByteArray();
+        mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
     @Override
     public void newRound() throws IOException {
-        out.printf("new\n");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        out.writeByte('R');
+        out.close();
+        byte[] payload = baos.toByteArray();
+        mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
     @Override
     public void quit() throws IOException {
-        out.printf("quit\n");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        out.writeByte('Q');
+        out.close();
+        byte[] payload = baos.toByteArray();
+        mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
     /**
@@ -66,44 +90,62 @@ public class ModelProxy implements ViewListener {
      * invokes the proper methods to process them.
      *
      * @author Nicholas A. Mattis
-     * @version 7/22/2015
+     * @version 8/5/2015
      */
     private class ReaderThread extends Thread {
         public void run() {
+            byte[] payload = new byte[128];
             try {
-                while (in.hasNextLine()) {
-                    String message = in.nextLine();
-                    Scanner s = new Scanner(message);
-                    String cmd = s.next();
-                    if (cmd.equals("id")) {
-                        int id = s.nextInt();
-                        modelListener.getID(id);
-                    } else if (cmd.equals("name")) {
-                        int id = s.nextInt();
-                        String playername = s.next();
-                        modelListener.name(id, playername);
-                    } else if (cmd.equals("score")) {
-                        int id = s.nextInt();
-                        int value = s.nextInt();
-                        modelListener.score(id, value);
-                    } else if (cmd.equals("choice")) {
-                        int id = s.nextInt();
-                        int animal = s.nextInt();
-                        modelListener.choice(id, animal);
-                    } else if (cmd.equals("outcome")) {
-                        int animal1 = s.nextInt();
-                        int verb = s.nextInt();
-                        int animal2 = s.nextInt();
-                        modelListener.outcome(animal1, verb, animal2);
-                    } else if (cmd.equals("new")) {
-                        modelListener.newRoundStarted();
-                    } else if (cmd.equals("quit")) {
-                        modelListener.quit();
-                    } else {
-                        System.err.println("Bad Message");
+                for (;;) {
+                    DatagramPacket packet = new
+                            DatagramPacket(payload, payload.length);
+                    mailbox.receive(packet);
+                    DataInputStream in =
+                            new DataInputStream(new
+                                    ByteArrayInputStream(payload, 0,
+                                    packet.getLength()));
+                    byte cmd = in.readByte();
+                    String pname;
+                    int id, value, a1, v, a2;
+                    switch (cmd) {
+                        case 'I':
+                            id = in.readByte();
+                            modelListener.getID(id);
+                            break;
+                        case 'N':
+                            id = in.readByte();
+                            pname = in.readUTF();
+                            modelListener.name(id, pname);
+                            break;
+                        case 'S':
+                            id = in.readByte();
+                            value = in.readByte();
+                            modelListener.score(id, value);
+                            break;
+                        case 'C':
+                            id = in.readByte();
+                            a1 = in.readByte();
+                            modelListener.choice(id, a1);
+                            break;
+                        case 'O':
+                            a1 = in.readByte();
+                            v = in.readByte();
+                            a2 = in.readByte();
+                            modelListener.outcome(a1, v, a2);
+                            break;
+                        case 'R':
+                            modelListener.newRoundStarted();
+                        case 'Q':
+                            modelListener.quit();
+                        default:
+                            System.err.println("Bad message");
+                            break;
                     }
                 }
             } catch (IOException e) {
+            }
+            finally {
+                mailbox.close();
             }
         }
     }

@@ -41,7 +41,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Alan Kaminsky
  * @author Nicholas A. Mattis
- * @version 7/23/2015
+ * @version 8/5/2015
  */
 public class MouseCatElephantUI implements ModelListener {
 
@@ -157,7 +157,7 @@ public class MouseCatElephantUI implements ModelListener {
         mouseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                makeChoice(0);
+                makeChoice(myID, 0);
             }
         });
         mouseButton.setEnabled(false);
@@ -165,7 +165,7 @@ public class MouseCatElephantUI implements ModelListener {
         catButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                makeChoice(1);
+                makeChoice(myID, 1);
             }
         });
         catButton.setEnabled(false);
@@ -173,7 +173,7 @@ public class MouseCatElephantUI implements ModelListener {
         elephantButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                makeChoice(2);
+                makeChoice(myID, 2);
             }
         });
         elephantButton.setEnabled(false);
@@ -305,9 +305,9 @@ public class MouseCatElephantUI implements ModelListener {
      *
      * @param buttonChoice  (int) choice that was made by the user
      */
-    private synchronized void makeChoice(int buttonChoice) {
+    private synchronized void makeChoice(int id, int buttonChoice) {
         try {
-            viewListener.playerChose(buttonChoice);
+            viewListener.playerChose(id, buttonChoice);
         } catch (IOException e) {
         }
     }

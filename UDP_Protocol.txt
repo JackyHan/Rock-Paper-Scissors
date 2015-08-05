@@ -1,0 +1,41 @@
+Binary Protocol:
+    _____________________________________________________________
+   |   ViewListener Method     |        Message Encoding	 |
+   |___________________________|_________________________________|
+   |- join(String playername)  |	'J' (1 byte)		 |
+   |			       |	playername (UTF-8 string)| 
+   |___________________________|_________________________________|
+   |- playerChose(int id,      |	'P' (1 byte)             |
+   |		int pchoice)   |	id (integer, 1 byte)     |
+   |			       |	choice (integer, 1 byte) |
+   |___________________________|_________________________________|	              	
+   |- newRound()               |	'R' (1 byte)		 |
+   |___________________________|_________________________________|
+   |- quit()		       |	'Q' (1 byte)		 |
+   |___________________________|_________________________________|
+
+    ModelListener Method       |	Message Encoding
+
+    - getID(int idnum)	       |	'I' (1 byte)
+			       |        idnum (integer, 1 byte)
+
+    - name(int id,	       |	'N' (1 byte)
+	     String playername)|	id (integer, 1 byte)
+			       |        pname (UTF-8 string)
+
+    - score(int id, int value) |	'S' (1 byte)
+			       | 	id (integer, 1 byte)
+			       |	value (integer, 1 byte)
+
+    - choice(int id,	       |	'C' (1 byte)	
+	      int playerchoice)|	id (integer, 1 byte)
+			       |	pchoice (integer, 1 byte)
+
+    - outcome(int a1, int v,   |	'O' (1 byte)
+		int a2)        |	a1 (integer, 1 byte)
+			       |	v  (integer, 1 byte)
+			       |	a2 (integer, 1 byte)
+
+    - newRoundStarted()        |	'R' (1 byte)
+
+    - quit()		       |	'Q' (1 byte)
