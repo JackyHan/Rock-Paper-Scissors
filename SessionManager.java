@@ -13,7 +13,7 @@ public class SessionManager implements ViewListener {
     }
 
     @Override
-    public void playerChose(int choice) throws IOException {
+    public void playerChose(int id, int choice) throws IOException {
 
     }
 

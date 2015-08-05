@@ -17,6 +17,13 @@ public interface ViewListener {
      */
     public void join(String playername) throws IOException;
 
+    /**
+     * sends the id of the player and what button they clicked
+     *
+     * @param id            (int) player id
+     * @param choice        (int) which choice they made
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void playerChose(int id, int choice) throws IOException;
 
     /**
