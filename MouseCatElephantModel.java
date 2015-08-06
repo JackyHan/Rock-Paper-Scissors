@@ -152,7 +152,10 @@ public class MouseCatElephantModel implements ViewListener {
 
     @Override
     public synchronized void newRound() throws IOException {
-
+        p1.setChoice(-1);
+        p2.setChoice(-1);
+        p1.getModelL().newRoundStarted();
+        p2.getModelL().newRoundStarted();
     }
 
     @Override

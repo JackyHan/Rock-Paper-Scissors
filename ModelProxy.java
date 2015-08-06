@@ -136,8 +136,10 @@ public class ModelProxy implements ViewListener {
                             break;
                         case 'R':
                             modelListener.newRoundStarted();
+                            break;
                         case 'Q':
                             modelListener.quit();
+                            break;
                         default:
                             System.err.println("Bad message");
                             break;
