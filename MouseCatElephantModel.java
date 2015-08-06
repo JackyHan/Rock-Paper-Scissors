@@ -13,7 +13,7 @@ public class MouseCatElephantModel implements ViewListener {
 
         private int id;
         private int score;
-        private int choice;
+        private int choice = -1;
         private String playername;
         private ModelListener modelL;
 
@@ -40,6 +40,8 @@ public class MouseCatElephantModel implements ViewListener {
         public int getScore() {
             return this.score;
         }
+
+        public void addScore() { this.score++; }
 
         public String getPlayername() {
             return this.playername;
@@ -79,11 +81,67 @@ public class MouseCatElephantModel implements ViewListener {
             throws IOException {
         if (p1.getID() == id) {
             p1.setChoice(choice);
+            p1.getModelL().choice(id, choice);
+            p2.getModelL().choice(id, choice);
         } else {
             p2.setChoice(choice);
+            p1.getModelL().choice(id, choice);
+            p2.getModelL().choice(id, choice);
         }
-        p1.getModelL().choice(id, choice);
-        p2.getModelL().choice(id, choice);
+        if (p1.getChoice() != -1 && p2.getChoice() != -1) {
+            if (p1.getChoice() == 0) {
+                if (p2.getChoice() == 0) {
+                    p1.getModelL().outcome(p1.getChoice(), 0, p2.getChoice());
+                    p2.getModelL().outcome(p1.getChoice(), 0, p2.getChoice());
+                } else if (p2.getChoice() == 1) {
+                    p1.getModelL().outcome(p2.getChoice(), 2, p1.getChoice());
+                    p2.getModelL().outcome(p2.getChoice(), 2, p1.getChoice());
+                    p2.addScore();
+                    p1.getModelL().score(p2.getID(), p2.getScore());
+                    p2.getModelL().score(p2.getID(), p2.getScore());
+                } else if (p2.getChoice() == 2) {
+                    p1.getModelL().outcome(p1.getChoice(), 1, p2.getChoice());
+                    p2.getModelL().outcome(p1.getChoice(), 1, p2.getChoice());
+                    p1.addScore();
+                    p1.getModelL().score(p1.getID(), p1.getScore());
+                    p2.getModelL().score(p1.getID(), p1.getScore());
+                }
+            } else if (p1.getChoice() == 1) {
+                if (p2.getChoice() == 0) {
+                    p1.getModelL().outcome(p1.getChoice(), 2, p2.getChoice());
+                    p2.getModelL().outcome(p1.getChoice(), 2, p2.getChoice());
+                    p1.addScore();
+                    p1.getModelL().score(p1.getID(), p1.getScore());
+                    p2.getModelL().score(p1.getID(), p1.getScore());
+                } else if (p2.getChoice() == 1) {
+                    p1.getModelL().outcome(p2.getChoice(), 0, p1.getChoice());
+                    p2.getModelL().outcome(p2.getChoice(), 0, p1.getChoice());
+                } else if (p2.getChoice() == 2) {
+                    p1.getModelL().outcome(p2.getChoice(), 3, p1.getChoice());
+                    p2.getModelL().outcome(p2.getChoice(), 3, p1.getChoice());
+                    p2.addScore();
+                    p1.getModelL().score(p2.getID(), p2.getScore());
+                    p2.getModelL().score(p2.getID(), p2.getScore());
+                }
+            } else if (p1.getChoice() == 2) {
+                if (p2.getChoice() == 0) {
+                    p1.getModelL().outcome(p2.getChoice(), 1, p1.getChoice());
+                    p2.getModelL().outcome(p2.getChoice(), 1, p1.getChoice());
+                    p2.addScore();
+                    p1.getModelL().score(p2.getID(), p2.getScore());
+                    p2.getModelL().score(p2.getID(), p2.getScore());
+                } else if (p2.getChoice() == 1) {
+                    p1.getModelL().outcome(p1.getChoice(), 3, p2.getChoice());
+                    p2.getModelL().outcome(p1.getChoice(), 3, p2.getChoice());
+                    p1.addScore();
+                    p1.getModelL().score(p1.getID(), p1.getScore());
+                    p2.getModelL().score(p1.getID(), p1.getScore());
+                } else if (p2.getChoice() == 2) {
+                    p1.getModelL().outcome(p2.getChoice(), 0, p1.getChoice());
+                    p2.getModelL().outcome(p2.getChoice(), 0, p1.getChoice());
+                }
+            }
+        }
     }
 
     @Override
@@ -93,10 +151,6 @@ public class MouseCatElephantModel implements ViewListener {
 
     @Override
     public synchronized void quit() throws IOException {
-        if (p1 == null) {
-            p2.getModelL().quit();
-        } else {
-            p1.getModelL().quit();
-        }
+
     }
 }
