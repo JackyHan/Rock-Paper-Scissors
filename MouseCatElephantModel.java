@@ -15,6 +15,7 @@ public class MouseCatElephantModel implements ViewListener {
 
         private int id;
         private int score;
+        private int choice;
         private String playername;
         private ModelListener modelL;
 
@@ -23,6 +24,14 @@ public class MouseCatElephantModel implements ViewListener {
             this.playername = playername;
             this.score = score;
             this.modelL = modelL;
+        }
+
+        public void setChoice(int choice) {
+            this.choice = choice;
+        }
+
+        public int getChoice() {
+            return this.choice;
         }
 
         public int getID() {
@@ -47,6 +56,7 @@ public class MouseCatElephantModel implements ViewListener {
         if (p1 == null) {
             p1 = new PlayerInfo(id, 0, playername, modelListener);
             try {
+                p1.getModelL().getID(p1.getID());
                 p1.getModelL().name(p1.getID(), p1.getPlayername());
                 p1.getModelL().score(p1.getID(), p1.getScore());
             } catch (IOException e) {
@@ -54,6 +64,7 @@ public class MouseCatElephantModel implements ViewListener {
         } else {
             p2 = new PlayerInfo(id, 0, playername, modelListener);
             try {
+                p2.getModelL().getID(p2.getID());
                 p2.getModelL().name(p2.getID(), p2.getPlayername());
                 p2.getModelL().score(p2.getID(), p2.getScore());
                 p1.getModelL().name(p2.getID(), p2.getPlayername());
@@ -72,12 +83,18 @@ public class MouseCatElephantModel implements ViewListener {
     @Override
     public synchronized void playerChose(int id, int choice)
             throws IOException {
-
+        if (p1.getID() == id) {
+            p1.setChoice(choice);
+        } else {
+            p2.setChoice(choice);
+        }
+        p1.getModelL().choice(id, choice);
+        p2.getModelL().choice(id, choice);
     }
 
     @Override
     public synchronized void newRound() throws IOException {
-
+        
     }
 
     @Override
