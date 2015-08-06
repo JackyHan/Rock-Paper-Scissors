@@ -6,6 +6,7 @@ import java.io.IOException;
  */
 public class MouseCatElephantModel implements ViewListener {
 
+    private int playerCount = 0;
     private PlayerInfo p1;
     private PlayerInfo p2;
 
@@ -52,6 +53,10 @@ public class MouseCatElephantModel implements ViewListener {
         }
     }
 
+    public synchronized int getPlayerCount() {
+        return playerCount;
+    }
+
     public synchronized void addModelListener(int id, String playername,
                                               ModelListener modelListener)
             throws IOException {
@@ -60,6 +65,7 @@ public class MouseCatElephantModel implements ViewListener {
             p1.getModelL().getID(p1.getID());
             p1.getModelL().name(p1.getID(), p1.getPlayername());
             p1.getModelL().score(p1.getID(), p1.getScore());
+            playerCount++;
         } else {
             p2 = new PlayerInfo(id, 0, playername, modelListener);
             p2.getModelL().getID(p2.getID());
@@ -151,6 +157,11 @@ public class MouseCatElephantModel implements ViewListener {
 
     @Override
     public synchronized void quit() throws IOException {
-
+        if (p1 == null) {
+            p2.getModelL().quit();
+        } else {
+            p1.getModelL().quit();
+            playerCount--;
+        }
     }
 }

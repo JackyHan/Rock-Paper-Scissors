@@ -14,7 +14,7 @@ public class SessionManager implements ViewListener {
     @Override
     public synchronized void join(ViewProxy proxy, String playername)
             throws IOException {
-        if (clientCount) {
+        if (clientCount && model.getPlayerCount() != 0) {
             model.addModelListener(1, playername, proxy);
             proxy.setViewListener(model);
             clientCount = false;
