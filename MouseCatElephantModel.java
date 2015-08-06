@@ -49,8 +49,6 @@ public class MouseCatElephantModel implements ViewListener {
         } else {
             p2 = new PlayerInfo(id, 0, playername, modelListener);
         }
-        System.out.println("p1 :" + p1);
-        System.out.println("p2 :" + p2);
     }
 
     @Override

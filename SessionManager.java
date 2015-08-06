@@ -18,11 +18,12 @@ public class SessionManager implements ViewListener {
             model.addModelListener(1, playername, proxy);
             proxy.setViewListener(model);
             clientCount = false;
+        } else {
+            model = new MouseCatElephantModel();
+            model.addModelListener(0, playername, proxy);
+            proxy.setViewListener(model);
+            clientCount = true;
         }
-        model = new MouseCatElephantModel();
-        model.addModelListener(0, playername, proxy);
-        proxy.setViewListener(model);
-        clientCount = true;
     }
 
     @Override
