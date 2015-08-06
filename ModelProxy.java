@@ -1,3 +1,4 @@
+import javax.swing.text.View;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -43,7 +44,7 @@ public class ModelProxy implements ViewListener {
     }
 
     @Override
-    public void join(String playername) throws IOException {
+    public void join(ViewProxy proxy, String playername) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
         out.writeByte('J');

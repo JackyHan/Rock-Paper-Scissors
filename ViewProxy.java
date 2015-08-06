@@ -137,7 +137,7 @@ public class ViewProxy implements ModelListener {
         switch (cmd) {
             case 'J':
                 playername = in.readUTF();
-                viewListener.join(playername);
+                viewListener.join(ViewProxy.this, playername);
                 break;
             case 'P':
                 id = in.readByte();

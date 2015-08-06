@@ -15,7 +15,7 @@ public interface ViewListener {
      * @param playername    name of the player starting the client
      * @throws IOException  thrown if an I/O error occurred
      */
-    public void join(String playername) throws IOException;
+    public void join(ViewProxy proxy, String playername) throws IOException;
 
     /**
      * sends the id of the player and what button they clicked
