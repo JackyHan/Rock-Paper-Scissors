@@ -6,7 +6,7 @@ import java.io.IOException;
  */
 public class SessionManager implements ViewListener {
 
-    private int clientCount = 0;
+    private boolean clientCount = false;
     private MouseCatElephantModel model;
 
     public SessionManager() {}
@@ -14,15 +14,15 @@ public class SessionManager implements ViewListener {
     @Override
     public synchronized void join(ViewProxy proxy, String playername)
             throws IOException {
-        if (clientCount == 1) {
-            model.addModelListener(1, proxy);
+        if (clientCount) {
+            model.addModelListener(1, playername, proxy);
             proxy.setViewListener(model);
-            clientCount = 0;
+            clientCount = false;
         }
         model = new MouseCatElephantModel();
-        model.addModelListener(0, proxy);
+        model.addModelListener(0, playername, proxy);
         proxy.setViewListener(model);
-        clientCount++;
+        clientCount = true;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class MouseCatElephant {
         final ModelProxy proxy = new ModelProxy(mailbox, new InetSocketAddress(serverhost, serverport));
         proxy.setModelListener(view);
         view.setViewListener(proxy);
-        proxy.join(playername);
+        proxy.join(null, playername);
     }
 
     /**
