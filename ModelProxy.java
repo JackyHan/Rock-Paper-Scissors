@@ -1,4 +1,3 @@
-import javax.swing.text.View;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -6,9 +5,8 @@ import java.net.SocketAddress;
 
 /**
  * ModelProxy class, handles messaging between the client and server. Outputs
- * client messages using a socket and PrintStream and then has a ReaderThread
- * that reads data from the socket into a scanner and decides what to tell the
- * view based on the command it has parsed
+ * client messages using UDP datagrams. The ReaderThread reads the datagram and
+ * decides what to tell the view based on the command it has parsed
  *
  * @author Nicholas A. Mattis
  * @version 8/5/2015

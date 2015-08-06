@@ -32,9 +32,11 @@ public class MouseCatElephant {
         String playername = args[4];
 
         try {
-            DatagramSocket mailbox = new DatagramSocket(new InetSocketAddress(clienthost, clientport));
+            DatagramSocket mailbox = new DatagramSocket(
+                    new InetSocketAddress(clienthost, clientport));
             MouseCatElephantUI view = MouseCatElephantUI.create(playername);
-            final ModelProxy proxy = new ModelProxy(mailbox, new InetSocketAddress(serverhost, serverport));
+            final ModelProxy proxy = new ModelProxy(mailbox,
+                    new InetSocketAddress(serverhost, serverport));
             proxy.setModelListener(view);
             view.setViewListener(proxy);
             proxy.join(null, playername);

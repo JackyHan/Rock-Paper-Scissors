@@ -1,6 +1,9 @@
 import java.io.IOException;
 
 /**
+ * MouseCatElephantModel class. Runs and stores all information that is needed
+ * to play the game.
+ *
  * @author Nicholas A. Mattis
  * @version 8/5/2015
  */
@@ -10,6 +13,9 @@ public class MouseCatElephantModel implements ViewListener {
     private PlayerInfo p1;
     private PlayerInfo p2;
 
+    /**
+     * PlayerInfo stores the information for each player in the session.
+     */
     private class PlayerInfo {
 
         private int id;
@@ -18,6 +24,14 @@ public class MouseCatElephantModel implements ViewListener {
         private String playername;
         private ModelListener modelL;
 
+        /**
+         * Constructor
+         *
+         * @param id            (int) id of player
+         * @param score         (int) score of player
+         * @param playername    (String) name
+         * @param modelL        ModelListener for player
+         */
         public PlayerInfo (int id, int score, String playername,
                            ModelListener modelL) {
             this.id = id;
@@ -26,37 +40,86 @@ public class MouseCatElephantModel implements ViewListener {
             this.modelL = modelL;
         }
 
+        /**
+         * Set the choice that the player made
+         *
+         * @param choice    (int) player's choice
+         */
         public void setChoice(int choice) {
             this.choice = choice;
         }
 
+        /**
+         * Get the players choice
+         *
+         * @return  integer value of player's choice
+         */
         public int getChoice() {
             return this.choice;
         }
 
+        /**
+         * Get the players id number
+         *
+         * @return      (int) id number
+         */
         public int getID() {
             return this.id;
         }
 
+        /**
+         * Get the players current score.
+         *
+         * @return      (int) score
+         */
         public int getScore() {
             return this.score;
         }
 
-        public void addScore() { this.score++; }
+        /**
+         * increment the players score by 1
+         */
+        public void addScore() {
+            this.score++;
+        }
 
+        /**
+         * get the players name
+         *
+         * @return      (String) players name
+         */
         public String getPlayername() {
             return this.playername;
         }
 
+        /**
+         * Get the players ModelListener
+         *
+         * @return      ModelListener object
+         */
         public ModelListener getModelL() {
             return this.modelL;
         }
     }
 
+    /**
+     * Get the current number of players in the session.
+     *
+     * @return      (int) total players in session
+     */
     public synchronized int getPlayerCount() {
         return playerCount;
     }
 
+    /**
+     * Create a new PlayerInfo object when someone joins and send the messages
+     * to the client to correctly display the information on the gui.
+     *
+     * @param id                player's id
+     * @param playername        player's name
+     * @param modelListener     player's modelListener
+     * @throws IOException      thrown if an I/O occurs
+     */
     public synchronized void addModelListener(int id, String playername,
                                               ModelListener modelListener)
             throws IOException {
@@ -160,11 +223,12 @@ public class MouseCatElephantModel implements ViewListener {
 
     @Override
     public synchronized void quit() throws IOException {
-        if (p1 == null) {
-            p2.getModelL().quit();
-        } else {
+        if (p1 != null) {
             p1.getModelL().quit();
-            playerCount--;
         }
+        if (p2 != null) {
+            p2.getModelL().quit();
+        }
+        playerCount--;
     }
 }

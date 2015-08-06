@@ -4,6 +4,11 @@ import java.net.DatagramSocket;
 import java.net.SocketAddress;
 
 /**
+ * ViewProxy class, handles messaging between the server and client. Outputs
+ * server messages using UDP datagrams. The Process method reads the
+ * datagrams and decides what to tell the view based on the command it has
+ * parsed
+ *
  * @author Nicholas A. Mattis
  * @version 8/5/2015
  */
