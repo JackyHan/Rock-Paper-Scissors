@@ -46,8 +46,22 @@ public class MouseCatElephantModel implements ViewListener {
                                               ModelListener modelListener) {
         if (p1 == null) {
             p1 = new PlayerInfo(id, 0, playername, modelListener);
+            try {
+                p1.getModelL().name(p1.getID(), p1.getPlayername());
+                p1.getModelL().score(p1.getID(), p1.getScore());
+            } catch (IOException e) {
+            }
         } else {
             p2 = new PlayerInfo(id, 0, playername, modelListener);
+            try {
+                p2.getModelL().name(p2.getID(), p2.getPlayername());
+                p2.getModelL().score(p2.getID(), p2.getScore());
+                p1.getModelL().name(p2.getID(), p2.getPlayername());
+                p1.getModelL().score(p2.getID(), p2.getScore());
+                p2.getModelL().name(p1.getID(), p1.getPlayername());
+                p2.getModelL().score(p1.getID(), p1.getScore());
+            } catch (IOException e) {
+            }
         }
     }
 
