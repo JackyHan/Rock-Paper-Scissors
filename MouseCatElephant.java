@@ -1,3 +1,4 @@
+import java.net.BindException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
@@ -30,13 +31,17 @@ public class MouseCatElephant {
         int clientport = Integer.parseInt(args[3]);
         String playername = args[4];
 
-        DatagramSocket mailbox = new DatagramSocket(new InetSocketAddress(clienthost, clientport));
-
-        MouseCatElephantUI view = MouseCatElephantUI.create(playername);
-        final ModelProxy proxy = new ModelProxy(mailbox, new InetSocketAddress(serverhost, serverport));
-        proxy.setModelListener(view);
-        view.setViewListener(proxy);
-        proxy.join(null, playername);
+        try {
+            DatagramSocket mailbox = new DatagramSocket(new InetSocketAddress(clienthost, clientport));
+            MouseCatElephantUI view = MouseCatElephantUI.create(playername);
+            final ModelProxy proxy = new ModelProxy(mailbox, new InetSocketAddress(serverhost, serverport));
+            proxy.setModelListener(view);
+            view.setViewListener(proxy);
+            proxy.join(null, playername);
+        } catch (BindException e) {
+            System.err.println("The host or port is already in use.");
+            System.exit(1);
+        }
     }
 
     /**
