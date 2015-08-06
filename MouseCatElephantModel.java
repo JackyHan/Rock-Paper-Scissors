@@ -1,6 +1,4 @@
-import javax.print.DocFlavor;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @author Nicholas A. Mattis
@@ -95,7 +93,10 @@ public class MouseCatElephantModel implements ViewListener {
 
     @Override
     public synchronized void quit() throws IOException {
-        p1.getModelL().quit();
-        p2.getModelL().quit();
+        if (p1 == null) {
+            p2.getModelL().quit();
+        } else {
+            p1.getModelL().quit();
+        }
     }
 }
