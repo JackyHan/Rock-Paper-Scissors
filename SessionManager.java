@@ -19,7 +19,13 @@ public class SessionManager implements ViewListener {
      */
     public SessionManager() {}
 
-    @Override
+    /**
+     * Join the game session.
+     *
+     * @param playername    name of the player starting the client
+     * @param proxy         player's view proxy
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public synchronized void join(ViewProxy proxy, String playername)
             throws IOException {
         if (clientCount && model.getPlayerCount() != 0) {
@@ -34,15 +40,29 @@ public class SessionManager implements ViewListener {
         }
     }
 
-    @Override
+    /**
+     * sends the id of the player and what button they clicked
+     *
+     * @param id            (int) player id
+     * @param choice        (int) which choice they made
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void playerChose(int id, int choice) throws IOException {
     }
 
-    @Override
+    /**
+     * Sent when player starts a new round
+     *
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void newRound() throws IOException {
     }
 
-    @Override
+    /**
+     * Sent when a player closes the window
+     *
+     * @throws IOException thrown if an I/O error occurred
+     */
     public void quit() throws IOException {
     }
 }

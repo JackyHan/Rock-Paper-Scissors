@@ -132,7 +132,6 @@ public class MouseCatElephantUI implements ModelListener {
         panel3.add(newRoundButton);
 
         newRoundButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 newRound();
             }
@@ -155,7 +154,6 @@ public class MouseCatElephantUI implements ModelListener {
         panel4.add(elephantButton);
 
         mouseButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 0);
             }
@@ -163,7 +161,6 @@ public class MouseCatElephantUI implements ModelListener {
         mouseButton.setEnabled(false);
 
         catButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 1);
             }
@@ -171,7 +168,6 @@ public class MouseCatElephantUI implements ModelListener {
         catButton.setEnabled(false);
 
         elephantButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 2);
             }
@@ -182,7 +178,6 @@ public class MouseCatElephantUI implements ModelListener {
         frame.pack();
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {
-            @Override
             public void windowClosing(WindowEvent e) {
                 quitProgram();
                 System.exit(0);
@@ -199,16 +194,29 @@ public class MouseCatElephantUI implements ModelListener {
         this.viewListener = viewListener;
     }
 
-    @Override
+    /**
+     * Report the user id the server assigns either 0 or 1
+     *
+     * @param  idnum        player id
+     * @throws IOException thrown if I/O error occurred
+     */
     public synchronized void getID(int idnum) throws IOException {
         this.myID = idnum;
     }
 
-    @Override
+    /**
+     * Reports one of the player's names.
+     *
+     * @param id            id num of player being reported
+     * @param playername    the name of the player being reported
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void name(int id, String playername)
             throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for name
+             */
             public void run() {
                 if (id == myID) {
                     myName.setText(playername);
@@ -222,10 +230,18 @@ public class MouseCatElephantUI implements ModelListener {
         });
     }
 
-    @Override
+    /**
+     * Sent to each client to report one of the player's scores
+     *
+     * @param id            id num of player whose score is being reported
+     * @param value         the value of the player's score
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void score(int id, int value) throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for score
+             */
             public void run() {
                 if (id == myID) {
                     myScore.setText(Integer.toString(value));
@@ -236,11 +252,19 @@ public class MouseCatElephantUI implements ModelListener {
         });
     }
 
-    @Override
+    /**
+     * Reports that one of the clients has selected an animal
+     *
+     * @param id            id num of player who made the choice
+     * @param playerchoice  0 for mouse, 1 for cat, or 2 for elephant
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void choice(int id, int playerchoice)
             throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for choice
+             */
             public void run() {
                 if (id == myID) {
                     myChoice.setText(Animals[playerchoice]);
@@ -255,11 +279,21 @@ public class MouseCatElephantUI implements ModelListener {
         });
     }
 
-    @Override
+    /**
+     * Reports the outcome of a round.
+     *
+     * @param animal1       int value of animal
+     * @param verb          0 for ties, 1 for frightens, 2 for eats, or 3 for
+     *                      stomps
+     * @param animal2       int value of animal
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void outcome(int animal1, int verb, int animal2)
             throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for outcome
+             */
             public void run() {
                 String a1 = Animals[animal1];
                 String v = Verbs[verb];
@@ -270,10 +304,16 @@ public class MouseCatElephantUI implements ModelListener {
         });
     }
 
-    @Override
+    /**
+     * Report that a new round has started
+     *
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void newRoundStarted() throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for new round
+             */
             public void run() {
                 myChoice.setText("");
                 theirChoice.setText("");
@@ -285,10 +325,16 @@ public class MouseCatElephantUI implements ModelListener {
         });
     }
 
-    @Override
+    /**
+     * Reports when game session has been terminated
+     *
+     * @throws IOException  thrown if I/O error occurred
+     */
     public synchronized void quit() throws IOException {
         onSwingThreadDo(new Runnable() {
-            @Override
+            /**
+             * run method for quit
+             */
             public void run() {
                 try {
                     viewListener.quit();

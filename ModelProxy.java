@@ -41,7 +41,13 @@ public class ModelProxy implements ViewListener {
         new ReaderThread().start();
     }
 
-    @Override
+    /**
+     * Join the game session.
+     *
+     * @param playername    name of the player starting the client
+     * @param proxy         player's view proxy object
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void join(ViewProxy proxy, String playername) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -52,7 +58,13 @@ public class ModelProxy implements ViewListener {
         mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
-    @Override
+    /**
+     * sends the id of the player and what button they clicked
+     *
+     * @param id            (int) player id
+     * @param choice        (int) which choice they made
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void playerChose(int id, int choice) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -64,7 +76,11 @@ public class ModelProxy implements ViewListener {
         mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
-    @Override
+    /**
+     * Sent when player starts a new round
+     *
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void newRound() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -74,7 +90,11 @@ public class ModelProxy implements ViewListener {
         mailbox.send(new DatagramPacket(payload, payload.length, destination));
     }
 
-    @Override
+    /**
+     * Sent when a player closes the window
+     *
+     * @throws IOException thrown if an I/O error occurred
+     */
     public void quit() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -92,6 +112,9 @@ public class ModelProxy implements ViewListener {
      * @version 8/5/2015
      */
     private class ReaderThread extends Thread {
+        /**
+         * run method executes datagram processing
+         */
         public void run() {
             byte[] payload = new byte[128];
             try {

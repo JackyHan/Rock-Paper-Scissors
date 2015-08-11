@@ -21,10 +21,10 @@ public class ViewProxy implements ModelListener {
     /**
      * Constructor
      *
-     * @param mailbox           Server's Mailbox.
-     * @param clientAddress     Client's Mailbox address.
+     * @param mailbox       Server's Mailbox.
+     * @param clientAddress Client's Mailbox address.
      */
-    public ViewProxy (DatagramSocket mailbox, SocketAddress clientAddress) {
+    public ViewProxy(DatagramSocket mailbox, SocketAddress clientAddress) {
         this.mailbox = mailbox;
         this.clientAddress = clientAddress;
     }
@@ -32,13 +32,18 @@ public class ViewProxy implements ModelListener {
     /**
      * Sets the viewlistener for this proxy
      *
-     * @param viewListener      ViewListener object
+     * @param viewListener ViewListener object
      */
     public void setViewListener(ViewListener viewListener) {
         this.viewListener = viewListener;
     }
 
-    @Override
+    /**
+     * Report the user id the server assigns either 0 or 1
+     *
+     * @param  idnum    id of player
+     * @throws          IOException thrown if I/O error occurred
+     */
     public void getID(int idnum) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -50,7 +55,13 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Reports one of the player's names.
+     *
+     * @param id            id num of player being reported
+     * @param playername    the name of the player being reported
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void name(int id, String playername) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -63,7 +74,13 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Sent to each client to report one of the player's scores
+     *
+     * @param id            id num of player whose score is being reported
+     * @param value         the value of the player's score
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void score(int id, int value) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -76,7 +93,13 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Reports that one of the clients has selected an animal
+     *
+     * @param id            id num of player who made the choice
+     * @param playerchoice  0 for mouse, 1 for cat, or 2 for elephant
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void choice(int id, int playerchoice) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -89,7 +112,15 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Reports the outcome of a round.
+     *
+     * @param animal1       int value of animal
+     * @param verb          0 for ties, 1 for frightens, 2 for eats, or 3 for
+     *                      stomps
+     * @param animal2       int value of animal
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void outcome(int animal1, int verb, int animal2) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -103,7 +134,11 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Report that a new round has started
+     *
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void newRoundStarted() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -114,7 +149,11 @@ public class ViewProxy implements ModelListener {
                 new DatagramPacket(payload, payload.length, clientAddress));
     }
 
-    @Override
+    /**
+     * Reports when game session has been terminated
+     *
+     * @throws IOException  thrown if I/O error occurred
+     */
     public void quit() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
@@ -128,9 +167,9 @@ public class ViewProxy implements ModelListener {
     /**
      * Process a recieved datagram
      *
-     * @param data          datagram packet
-     * @return              True to discard the viewproxy, false otherwise.
-     * @throws IOException  thrown if an I/O error occurred
+     * @param data datagram packet
+     * @return True to discard the viewproxy, false otherwise.
+     * @throws IOException thrown if an I/O error occurred
      */
     public boolean process(DatagramPacket data) throws IOException {
         boolean discard = false;

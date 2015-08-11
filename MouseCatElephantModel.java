@@ -141,11 +141,23 @@ public class MouseCatElephantModel implements ViewListener {
         }
     }
 
-    @Override
+    /**
+     * Join the game session.
+     *
+     * @param playername    name of the player starting the client
+     * @param proxy         viewproxy object for player
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public void join(ViewProxy proxy, String playername) throws IOException {
     }
 
-    @Override
+    /**
+     * sends the id of the player and what button they clicked
+     *
+     * @param id            (int) player id
+     * @param choice        (int) which choice they made
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public synchronized void playerChose(int id, int choice)
             throws IOException {
         if (p1.getID() == id) {
@@ -213,7 +225,11 @@ public class MouseCatElephantModel implements ViewListener {
         }
     }
 
-    @Override
+    /**
+     * Sent when player starts a new round
+     *
+     * @throws IOException  thrown if an I/O error occurred
+     */
     public synchronized void newRound() throws IOException {
         p1.setChoice(-1);
         p2.setChoice(-1);
@@ -221,7 +237,11 @@ public class MouseCatElephantModel implements ViewListener {
         p2.getModelL().newRoundStarted();
     }
 
-    @Override
+    /**
+     * Sent when a player closes the window
+     *
+     * @throws IOException thrown if an I/O error occurred
+     */
     public synchronized void quit() throws IOException {
         if (p1 != null) {
             p1.getModelL().quit();
