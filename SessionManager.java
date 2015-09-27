@@ -7,12 +7,12 @@ import java.io.IOException;
  * matched it resets the model for the next client connection.
  *
  * @author Nicholas A. Mattis
- * @version 8/5/2015
+ * @version 9/26/2015
  */
 public class SessionManager implements ViewListener {
 
     private boolean clientCount = false;
-    private MouseCatElephantModel model;
+    private RockPaperScissorsModel model;
 
     /**
      * Constructor
@@ -33,7 +33,7 @@ public class SessionManager implements ViewListener {
             proxy.setViewListener(model);
             clientCount = false;
         } else {
-            model = new MouseCatElephantModel();
+            model = new RockPaperScissorsModel();
             model.addModelListener(0, playername, proxy);
             proxy.setViewListener(model);
             clientCount = true;

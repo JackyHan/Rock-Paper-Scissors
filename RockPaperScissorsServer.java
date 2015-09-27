@@ -3,14 +3,14 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
 /**
- * MouseCatElephantServer is the main program that starts the server.
+ * RockPaperScissorsServer is the main program that starts the server.
  *
- * Usage: java MouseCatElephant <I>serverhost</I> <I>serverport</I>
+ * Usage: java RockPaperScissors <I>serverhost</I> <I>serverport</I>
  *
  * @author Nicholas A. Mattis
- * @version 8/5/2015
+ * @version 9/26/2015
  */
-public class MouseCatElephantServer {
+public class RockPaperScissorsServer {
 
     /**
      * Main method executes the entire program
@@ -44,7 +44,7 @@ public class MouseCatElephantServer {
      * Print usage message and exit.
      */
     private static void usage() {
-        System.err.println("Usage: java MouseCatElephantServer <host> <port>");
+        System.err.println("Usage: java RockPaperScissorsServer <host> <port>");
         System.exit(1);
     }
 }

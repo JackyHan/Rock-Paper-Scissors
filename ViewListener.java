@@ -2,10 +2,10 @@ import java.io.IOException;
 
 /**
  * Interface ViewListener specifies the interface for an object that is
- * triggered by events from the view object in the MouseCatElephant game.
+ * triggered by events from the view object in the RockPaperScissors game.
  *
  * @author Nicholas A. Mattis
- * @version 7/22/2015
+ * @version 9/26/2015
  */
 public interface ViewListener {
 

@@ -2,10 +2,10 @@ import java.io.IOException;
 
 /**
  * Interface ModelListener specifies the interface for an object that is
- * triggered by events from the model object in the MouseCatElephant game.
+ * triggered by events from the model object in the RockPaperScissors game.
  *
  * @author Nicholas A. Mattis
- * @version 7/22/2015
+ * @version 9/26/2015
  */
 public interface ModelListener {
 
@@ -35,10 +35,10 @@ public interface ModelListener {
     public void score(int id, int value) throws IOException;
 
     /**
-     * Reports that one of the clients has selected an animal
+     * Reports that one of the clients has selected an objects
      *
      * @param id            id num of player who made the choice
-     * @param playerchoice  0 for mouse, 1 for cat, or 2 for elephant
+     * @param playerchoice  0 for rock, 1 for paper, or 2 for scissors
      * @throws IOException  thrown if I/O error occurred
      */
     public void choice(int id, int playerchoice) throws IOException;
@@ -46,13 +46,13 @@ public interface ModelListener {
     /**
      * Reports the outcome of a round.
      *
-     * @param animal1       int value of animal
-     * @param verb          0 for ties, 1 for frightens, 2 for eats, or 3 for
-     *                      stomps
-     * @param animal2       int value of animal
+     * @param object1       int value of object
+     * @param verb          0 for ties, 1 for breaks, 2 for cuts, or 3 for
+     *                      covers
+     * @param object2       int value of object
      * @throws IOException  thrown if I/O error occurred
      */
-    public void outcome(int animal1, int verb, int animal2) throws IOException;
+    public void outcome(int object1, int verb, int object2) throws IOException;
 
     /**
      * Report that a new round has started

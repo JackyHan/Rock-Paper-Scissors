@@ -3,16 +3,16 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
 /**
- * MouseCatElephant is the main program, it starts the connection to the server
+ * RockPaperScissors is the main program, it starts the connection to the server
  * and initializes the model proxy and view
  *
- * Usage: java MouseCatElephant <I>serverhost</I> <I>serverport</I>
+ * Usage: java RockPaperScissors <I>serverhost</I> <I>serverport</I>
  *          <I>clienthost</I> <I>clientport</I> <I>playername</I>
  *
  * @author Nicholas A. Mattis
- * @version 8/5/2015
+ * @version 9/26/2015
  */
-public class MouseCatElephant {
+public class RockPaperScissors {
 
     /**
      * Main method that executes entire program
@@ -34,7 +34,7 @@ public class MouseCatElephant {
         try {
             DatagramSocket mailbox = new DatagramSocket(
                     new InetSocketAddress(clienthost, clientport));
-            MouseCatElephantUI view = MouseCatElephantUI.create(playername);
+            RockPaperScissorsUI view = RockPaperScissorsUI.create(playername);
             final ModelProxy proxy = new ModelProxy(mailbox,
                     new InetSocketAddress(serverhost, serverport));
             proxy.setModelListener(view);
@@ -50,7 +50,7 @@ public class MouseCatElephant {
      * Print usage message and exit.
      */
     private static void usage() {
-        System.err.println("Usage: java MouseCatElephant <serverhost> " +
+        System.err.println("Usage: java RockPaperScissors <serverhost> " +
                 "<serverport> <clienthost> <clientport> <playername>");
         System.exit(1);
     }

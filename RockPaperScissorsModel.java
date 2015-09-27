@@ -1,13 +1,13 @@
 import java.io.IOException;
 
 /**
- * MouseCatElephantModel class. Runs and stores all information that is needed
+ * RockPaperScissorsModel class. Runs and stores all information that is needed
  * to play the game.
  *
  * @author Nicholas A. Mattis
- * @version 8/5/2015
+ * @version 9/26/2015
  */
-public class MouseCatElephantModel implements ViewListener {
+public class RockPaperScissorsModel implements ViewListener {
 
     private int playerCount = 0;
     private PlayerInfo p1;

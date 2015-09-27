@@ -1,28 +1,3 @@
-//******************************************************************************
-//
-// File:    MouseCatElephantUI.java
-// Package: ---
-// Unit:    Class MouseCatElephantUI.java
-//
-// This Java source file is copyright (C) 2015 by Alan Kaminsky. All rights
-// reserved. For further information, contact the author, Alan Kaminsky, at
-// ark@cs.rit.edu.
-//
-// This Java source file is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by the Free
-// Software Foundation; either version 3 of the License, or (at your option) any
-// later version.
-//
-// This Java source file is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-// details.
-//
-// You may obtain a copy of the GNU General Public License on the World Wide Web
-// at http://www.gnu.org/licenses/gpl.html.
-//
-//******************************************************************************
-
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.BorderFactory;
@@ -36,14 +11,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
- * Class MouseCatElephantUI provides the user interface for the Mouse Cat
- * Elephant network game.
+ * Class RockPaperScissorsUI provides the user interface for the Rock Paper
+ * Scissors network game.
  *
- * @author Alan Kaminsky
  * @author Nicholas A. Mattis
- * @version 8/5/2015
+ * @version 9/26/2015
  */
-public class MouseCatElephantUI implements ModelListener {
+public class RockPaperScissorsUI implements ModelListener {
 
 // Hidden data members.
 
@@ -59,27 +33,27 @@ public class MouseCatElephantUI implements ModelListener {
     private JTextField theirChoice;
     private JTextField outcomeField;
     private JButton newRoundButton;
-    private JButton mouseButton;
-    private JButton catButton;
-    private JButton elephantButton;
+    private JButton rockButton;
+    private JButton paperButton;
+    private JButton scissorsButton;
 
     private int myID;
     private int otherChoice;
 
-    private String Animals[] = {"Mouse", "Cat", "Elephant"};
-    private String Verbs[] = {"ties", "frightens", "eats", "stomps"};
+    private String Objects[] = {"Rock", "Paper", "Scissors"};
+    private String Verbs[] = {"ties", "breaks", "covers", "cut"};
 
     private ViewListener viewListener;
 
 // Hidden constructors.
 
     /**
-     * Construct a new Mouse Cat Elephant UI.
+     * Construct a new Rock Paper Scissors UI.
      */
-    private MouseCatElephantUI
+    private RockPaperScissorsUI
     (String name) {
         // Set up window.
-        frame = new JFrame("Mouse Cat Elephant -- " + name);
+        frame = new JFrame("Rock Paper Scissors -- " + name);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         frame.add(panel);
@@ -143,36 +117,36 @@ public class MouseCatElephantUI implements ModelListener {
         panel4.setLayout(new BoxLayout(panel4, BoxLayout.X_AXIS));
         panel.add(panel4);
         ClassLoader loader = getClass().getClassLoader();
-        mouseButton = new JButton(new ImageIcon
-                (loader.getResource("mouse.png")));
-        panel4.add(mouseButton);
-        catButton = new JButton(new ImageIcon
-                (loader.getResource("cat.png")));
-        panel4.add(catButton);
-        elephantButton = new JButton(new ImageIcon
-                (loader.getResource("elephant.png")));
-        panel4.add(elephantButton);
+        rockButton = new JButton(new ImageIcon
+                (loader.getResource("rock.png")));
+        panel4.add(rockButton);
+        paperButton = new JButton(new ImageIcon
+                (loader.getResource("paper.png")));
+        panel4.add(paperButton);
+        scissorsButton = new JButton(new ImageIcon
+                (loader.getResource("scissor.png")));
+        panel4.add(scissorsButton);
 
-        mouseButton.addActionListener(new ActionListener() {
+        rockButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 0);
             }
         });
-        mouseButton.setEnabled(false);
+        rockButton.setEnabled(false);
 
-        catButton.addActionListener(new ActionListener() {
+        paperButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 1);
             }
         });
-        catButton.setEnabled(false);
+        paperButton.setEnabled(false);
 
-        elephantButton.addActionListener(new ActionListener() {
+        scissorsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 makeChoice(myID, 2);
             }
         });
-        elephantButton.setEnabled(false);
+        scissorsButton.setEnabled(false);
 
         // Display window.
         frame.pack();
@@ -186,7 +160,7 @@ public class MouseCatElephantUI implements ModelListener {
     }
 
     /**
-     * set the ViewListener for MouseCatElephantUI
+     * set the ViewListener for RockPaperScissorsUI
      *
      * @param viewListener View Listener
      */
@@ -222,9 +196,9 @@ public class MouseCatElephantUI implements ModelListener {
                     myName.setText(playername);
                 } else {
                     theirName.setText(playername);
-                    mouseButton.setEnabled(true);
-                    catButton.setEnabled(true);
-                    elephantButton.setEnabled(true);
+                    rockButton.setEnabled(true);
+                    paperButton.setEnabled(true);
+                    scissorsButton.setEnabled(true);
                 }
             }
         });
@@ -253,10 +227,10 @@ public class MouseCatElephantUI implements ModelListener {
     }
 
     /**
-     * Reports that one of the clients has selected an animal
+     * Reports that one of the clients has selected an object
      *
      * @param id            id num of player who made the choice
-     * @param playerchoice  0 for mouse, 1 for cat, or 2 for elephant
+     * @param playerchoice  0 for rock, 1 for paper, or 2 for scissors
      * @throws IOException  thrown if I/O error occurred
      */
     public synchronized void choice(int id, int playerchoice)
@@ -267,10 +241,10 @@ public class MouseCatElephantUI implements ModelListener {
              */
             public void run() {
                 if (id == myID) {
-                    myChoice.setText(Animals[playerchoice]);
-                    mouseButton.setEnabled(false);
-                    catButton.setEnabled(false);
-                    elephantButton.setEnabled(false);
+                    myChoice.setText(Objects[playerchoice]);
+                    rockButton.setEnabled(false);
+                    paperButton.setEnabled(false);
+                    scissorsButton.setEnabled(false);
                 } else {
                     otherChoice = playerchoice;
                     theirChoice.setText("XXXX");
@@ -282,23 +256,22 @@ public class MouseCatElephantUI implements ModelListener {
     /**
      * Reports the outcome of a round.
      *
-     * @param animal1       int value of animal
-     * @param verb          0 for ties, 1 for frightens, 2 for eats, or 3 for
-     *                      stomps
-     * @param animal2       int value of animal
+     * @param object1       int value of object
+     * @param verb          0 for ties, 1 for breaks, 2 for cuts, or 3 covers
+     * @param object2       int value of object
      * @throws IOException  thrown if I/O error occurred
      */
-    public synchronized void outcome(int animal1, int verb, int animal2)
+    public synchronized void outcome(int object1, int verb, int object2)
             throws IOException {
         onSwingThreadDo(new Runnable() {
             /**
              * run method for outcome
              */
             public void run() {
-                String a1 = Animals[animal1];
+                String a1 = Objects[object1];
                 String v = Verbs[verb];
-                String a2 = Animals[animal2];
-                theirChoice.setText(Animals[otherChoice]);
+                String a2 = Objects[object2];
+                theirChoice.setText(Objects[otherChoice]);
                 outcomeField.setText(a1 + " " + v + " " + a2.toLowerCase());
             }
         });
@@ -318,9 +291,9 @@ public class MouseCatElephantUI implements ModelListener {
                 myChoice.setText("");
                 theirChoice.setText("");
                 outcomeField.setText("");
-                mouseButton.setEnabled(true);
-                catButton.setEnabled(true);
-                elephantButton.setEnabled(true);
+                rockButton.setEnabled(true);
+                paperButton.setEnabled(true);
+                scissorsButton.setEnabled(true);
             }
         });
     }
@@ -346,7 +319,7 @@ public class MouseCatElephantUI implements ModelListener {
     }
 
     /**
-     * Player chooses animal, disables all buttons and sends choice message to
+     * Player chooses object, disables all buttons and sends choice message to
      * server
      *
      * @param buttonChoice  (int) choice that was made by the user
@@ -383,21 +356,21 @@ public class MouseCatElephantUI implements ModelListener {
 // Exported operations.
 
     /**
-     * An object holding a reference to a Mouse Cat Elephant UI.
+     * An object holding a reference to a Rock Paper Scissors UI.
      */
     private static class UIRef {
-        public MouseCatElephantUI ui;
+        public RockPaperScissorsUI ui;
     }
 
     /**
-     * Construct a new Mouse Cat Elephant UI.
+     * Construct a new Rock Paper Scissors UI.
      */
-    public static MouseCatElephantUI create
+    public static RockPaperScissorsUI create
     (String name) {
         final UIRef ref = new UIRef();
         onSwingThreadDo(new Runnable() {
             public void run() {
-                ref.ui = new MouseCatElephantUI(name);
+                ref.ui = new RockPaperScissorsUI(name);
             }
         });
         return ref.ui;
